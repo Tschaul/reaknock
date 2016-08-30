@@ -40,5 +40,5 @@ class View extends React.Component<{model:ViewModel},{}> {
 
 var vm = new ViewModel({name:"test"})
 
-ReactDOM.render(<View model={vm} />, document.body);
+ReactDOM.render(<View model={vm} />, document.getElementById("view"));
 

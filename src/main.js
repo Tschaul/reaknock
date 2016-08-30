@@ -33,5 +33,5 @@ var View = (function (_super) {
     return View;
 }(React.Component));
 var vm = new ViewModel({ name: "test" });
-ReactDOM.render(React.createElement(View, {model: vm}), document.body);
+ReactDOM.render(React.createElement(View, {model: vm}), document.getElementById("view"));
 //# sourceMappingURL=main.js.map
