@@ -67,7 +67,7 @@ var KnockoutView = (function (_super) {
         this.trigger = ko.observable();
         this.renderComputed = ko.computed(function () {
             _this.trigger();
-            return _this.renderModel(_this.props.model);
+            return _this.renderObservable();
         });
         this.renderComputed.subscribe(function () { return _this.forceUpdate(); });
     }
@@ -84,7 +84,8 @@ var View = (function (_super) {
     function View() {
         _super.apply(this, arguments);
     }
-    View.prototype.renderModel = function (model) {
+    View.prototype.renderObservable = function () {
+        var model = this.props.model;
         var items = model.todos().map(function (item, n) { return (React.createElement(ItemView, {model: item, key: n})); });
         return (React.createElement("div", null, React.createElement("h2", null, model.title()), React.createElement("ul", null, items), React.createElement("button", {onClick: model.addTodo}, "Add")));
     };
@@ -95,7 +96,8 @@ var ItemView = (function (_super) {
     function ItemView() {
         _super.apply(this, arguments);
     }
-    ItemView.prototype.renderModel = function (model) {
+    ItemView.prototype.renderObservable = function () {
+        var model = this.props.model;
         if (model.done()) {
             return React.createElement("li", {onClick: model.toggle, style: { textDecoration: "line-through" }}, model.name());
         }

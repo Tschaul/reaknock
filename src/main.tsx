@@ -58,20 +58,20 @@ class ViewModel {
 }
 
 
-abstract class KnockoutView<TModel> extends React.Component<{model:TModel},{}>{
-    constructor(props: {model:TModel}){
+abstract class KnockoutView<TP,TS> extends React.Component<TP,TS>{
+    constructor(props: TP){
         super(props);
 
         this.renderComputed.subscribe(()=>this.forceUpdate())
     }
 
-    public abstract renderModel(model: TModel);
+    public abstract renderObservable();
 
     private trigger = ko.observable();
 
     private renderComputed = ko.computed(()=>{
         this.trigger();
-        return this.renderModel(this.props.model)
+        return this.renderObservable()
     })
 
     componentWillReceiveProps(){
@@ -84,8 +84,10 @@ abstract class KnockoutView<TModel> extends React.Component<{model:TModel},{}>{
 
 }
 
-class View extends KnockoutView<ViewModel> {
-    renderModel(model){
+class View extends KnockoutView<{model:ViewModel},{}> {
+    renderObservable(){
+        let {model} = this.props;
+
         let items = model.todos().map((item,n)=>(
             <ItemView model={item} key={n}/>
         ))
@@ -102,8 +104,11 @@ class View extends KnockoutView<ViewModel> {
     }
 }
 
-class ItemView extends KnockoutView<ItemViewModel> {
-    renderModel(model:ItemViewModel){
+class ItemView extends KnockoutView<{model:ItemViewModel},{}> {
+    
+    renderObservable(){
+        let {model} = this.props;
+
         if(model.done()){
             return <li onClick={model.toggle} style={{textDecoration:"line-through"}}>{model.name()}</li>
         }else{
